@@ -146,15 +146,12 @@ async def run_code_review(
             hcs_url = hashscan_topic_url(hcs_topic_id, settings.hedera_network)
             logger.info("HCS message submitted: topic=%s seq=%s", hcs_topic_id, hcs_sequence_number)
 
-            # Step 3: Mint NFT
+            # Step 3: Mint NFT — metadata must stay <=100 bytes; full data lives on HCS
             nft_token_id = _ensure_nft_collection(client)
             nft_metadata = {
-                "type": "proof_of_work",
-                "task": "code_review",
-                "verdict": result.verdict,
-                "hcs_topic": hcs_topic_id,
-                "hcs_seq": hcs_sequence_number,
-                "ts": created_at,
+                "v": result.verdict[:4],      # "appr" / "chan" / "need"
+                "t": hcs_topic_id,
+                "s": hcs_sequence_number,
             }
             nft_serial_number = mint_nft(client, nft_token_id, nft_metadata)
             nft_url = hashscan_nft_url(nft_token_id, nft_serial_number, settings.hedera_network)
@@ -176,7 +173,7 @@ async def run_code_review(
         hcs_sequence_number=hcs_sequence_number,
         nft_token_id=nft_token_id,
         nft_serial_number=nft_serial_number,
-        verification_status="verified" if nft_serial_number is not None else "pending",
+        verification_status="verified" if nft_serial_number else "pending",
     )
 
     return CertificateRecord(

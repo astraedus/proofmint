@@ -107,13 +107,9 @@ def mint_nft(
 
     receipt = tx.execute(client)
 
-    # SDK exposes serial numbers as a list on the receipt
-    serials = getattr(receipt, "serial_numbers", None)
-    if serials:
-        serial = int(serials[0])
-    else:
-        # Fallback: some SDK versions put it on serial_number (singular)
-        serial = int(getattr(receipt, "serial_number", 0))
+    # SDK returns serial_numbers as a protobuf RepeatedScalarContainer
+    serials = receipt.serial_numbers
+    serial = int(serials[0]) if len(serials) > 0 else 0
 
     logger.info("Minted NFT serial %d for token %s", serial, token_id)
     return serial

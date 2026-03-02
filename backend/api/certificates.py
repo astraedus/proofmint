@@ -55,7 +55,7 @@ async def verify_cert(cert_id: int) -> dict[str, Any]:
     if not cert:
         raise HTTPException(status_code=404, detail="Certificate not found")
 
-    if not cert.get("nft_token_id") or not cert.get("nft_serial_number"):
+    if not cert.get("nft_token_id") or not cert.get("nft_serial_number"):  # 0 treated as absent
         return {
             "cert_id": cert_id,
             "status": "unanchored",

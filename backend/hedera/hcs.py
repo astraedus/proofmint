@@ -46,10 +46,10 @@ def submit_message(client, topic_id: str, payload: dict) -> str:
     Returns:
         Sequence number string of the submitted message
     """
-    message_bytes = json.dumps(payload, sort_keys=True).encode("utf-8")
+    message_str = json.dumps(payload, sort_keys=True)
     tx = TopicMessageSubmitTransaction(
         topic_id=TopicId.from_string(topic_id),
-        message=message_bytes,
+        message=message_str,
     )
     receipt = tx.execute(client)
 
