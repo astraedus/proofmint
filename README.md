@@ -69,3 +69,15 @@ GET /api/certificates/{id}/verify
 | GITHUB_TOKEN | No | For future GitHub integration |
 
 Get free testnet credentials: https://portal.hedera.com
+
+## Hackathon Submissions
+
+| Hackathon | Platform | Track | Status |
+|-----------|----------|-------|--------|
+| [Hedera Hello Future Apex 2026](https://hackathon.stackup.dev/web/events/hedera-hello-future-apex-hackathon-2026) | StackUp | AI & Agents | Submitting (deadline March 23) |
+
+**Why this hackathon**: $250K prize pool, AI & Agents track. ProofMint was purpose-built for this — uses 3 Hedera services (HTS, HCS, Mirror Node) as structurally essential components.
+
+**On-chain proof (testnet)**:
+- NFT Collection: [0.0.8114539](https://hashscan.io/testnet/token/0.0.8114539)
+- HCS Topic: [0.0.8114364](https://hashscan.io/testnet/topic/0.0.8114364)

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProofMint - Pitch Deck</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0a0a;
+    color: #fff;
+  }
+
+  .slide {
+    width: 1280px;
+    height: 720px;
+    padding: 60px 80px;
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+  }
+
+  .slide-number {
+    position: absolute;
+    bottom: 30px;
+    right: 40px;
+    font-size: 14px;
+    color: #555;
+  }
+
+  .brand {
+    position: absolute;
+    bottom: 30px;
+    left: 40px;
+    font-size: 14px;
+    color: #555;
+    font-weight: 600;
+  }
+
+  h1 {
+    font-size: 52px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+
+  h2 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #e5e5e5;
+    margin-bottom: 32px;
+  }
+
+  h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #a78bfa;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  p {
+    font-size: 22px;
+    line-height: 1.6;
+    color: #d4d4d4;
+    max-width: 900px;
+  }
+
+  .subtitle {
+    font-size: 28px;
+    color: #a1a1aa;
+    margin-bottom: 40px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin-top: 20px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 20px;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 28px;
+  }
+
+  .card h4 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #8b5cf6;
+    margin-bottom: 12px;
+  }
+
+  .card p {
+    font-size: 17px;
+    color: #a1a1aa;
+    line-height: 1.5;
+  }
+
+  .highlight {
+    color: #8b5cf6;
+    font-weight: 700;
+  }
+
+  .stat {
+    font-size: 48px;
+    font-weight: 800;
+    color: #3b82f6;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+
+  .flow-step {
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 12px;
+    padding: 16px 24px;
+    font-size: 17px;
+    font-weight: 600;
+    color: #c4b5fd;
+  }
+
+  .flow-sep {
+    font-size: 24px;
+    color: #555;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  ul li {
+    font-size: 20px;
+    color: #d4d4d4;
+    padding: 8px 0;
+    padding-left: 28px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #8b5cf6;
+  }
+
+  .tag {
+    display: inline-block;
+    background: rgba(59, 130, 246, 0.2);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 8px;
+    padding: 6px 16px;
+    font-size: 15px;
+    color: #93c5fd;
+    margin: 4px;
+  }
+
+  .big-quote {
+    font-size: 32px;
+    font-style: italic;
+    color: #a78bfa;
+    line-height: 1.4;
+    border-left: 4px solid #8b5cf6;
+    padding-left: 24px;
+    margin: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+  }
+
+  table th {
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 16px;
+    color: #8b5cf6;
+    border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  table td {
+    padding: 12px 16px;
+    font-size: 18px;
+    color: #d4d4d4;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  @media print {
+    .slide {
+      page-break-after: always;
+      page-break-inside: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: Title -->
+<div class="slide" style="justify-content: center; align-items: center; text-align: center;">
+  <h1 style="font-size: 64px; margin-bottom: 24px;">ProofMint</h1>
+  <p class="subtitle" style="max-width: 700px; margin: 0 auto;">Verifiable AI Agent Certificates on Hedera</p>
+  <div style="margin-top: 40px;">
+    <span class="tag">HTS (NFTs)</span>
+    <span class="tag">HCS (Audit Trail)</span>
+    <span class="tag">Mirror Node (Verification)</span>
+  </div>
+  <p style="margin-top: 48px; font-size: 18px; color: #777;">Hedera Hello Future Apex 2026 | AI & Agents Track</p>
+  <p style="font-size: 16px; color: #555; margin-top: 8px;">Diven Rastdus | Solo Builder</p>
+  <span class="slide-number">1/8</span>
+</div>
+
+<!-- SLIDE 2: Problem -->
+<div class="slide">
+  <h3>The Problem</h3>
+  <h2>AI agents are black boxes.<br>Nobody can verify what they did.</h2>
+  <div class="grid-2" style="margin-top: 32px;">
+    <div class="card">
+      <h4>No Proof of Work</h4>
+      <p>An AI agent says it reviewed your code, analyzed your data, or passed your compliance check. But where's the evidence? Logs can be edited. Databases can be tampered with.</p>
+    </div>
+    <div class="card">
+      <h4>No Accountability</h4>
+      <p>When AI makes decisions that affect real systems, there's no immutable record of what was analyzed, what was found, and what was decided. Trust is assumed, not verified.</p>
+    </div>
+  </div>
+  <div class="big-quote" style="margin-top: 32px;">
+    "Did the AI actually review this, or did someone just click approve?"
+  </div>
+  <span class="brand">ProofMint</span>
+  <span class="slide-number">2/8</span>
+</div>
+
+<!-- SLIDE 3: Solution -->
+<div class="slide">
+  <h3>The Solution</h3>
+  <h2>Mint an NFT certificate for every AI task</h2>
+  <p style="margin-bottom: 32px;">ProofMint creates a permanent, verifiable, on-chain record every time an AI agent completes work.</p>
+  <div class="flow-arrow">
+    <div class="flow-step">AI Reviews Code</div>
+    <span class="flow-sep">-></span>
+    <div class="flow-step">Publish to HCS</div>
+    <span class="flow-sep">-></span>
+    <div class="flow-step">Mint NFT Certificate</div>
+    <span class="flow-sep">-></span>
+    <div class="flow-step">Verify via Mirror Node</div>
+  </div>
+  <div class="grid-3" style="margin-top: 24px;">
+    <div class="card">
+      <h4>Immutable Audit</h4>
+      <p>Full task details (hashes, verdict, issues) published to HCS. Cannot be altered after the fact.</p>
+    </div>
+    <div class="card">
+      <h4>NFT Certificate</h4>
+      <p>Compact NFT minted via HTS referencing the HCS message. Transferable, permanent proof.</p>
+    </div>
+    <div class="card">
+      <h4>Independent Verify</h4>
+      <p>Anyone can query Mirror Node to cross-reference NFT metadata against HCS audit trail.</p>
+    </div>
+  </div>
+  <span class="brand">ProofMint</span>
+  <span class="slide-number">3/8</span>
+</div>
+
+<!-- SLIDE 4: How Hedera Is Used -->
+<div class="slide">
+  <h3>Hedera Integration</h3>
+  <h2>Three services, structurally essential</h2>
+  <table>
+    <tr>
+      <th>Service</th>
+      <th>Role</th>
+      <th>What Happens</th>
+    </tr>
+    <tr>
+      <td><span class="highlight">HTS</span> (Token Service)</td>
+      <td>Certificate Registry</td>
+      <td>NFT collection created; each task mints a new serial with compact metadata</td>
+    </tr>
+    <tr>
+      <td><span class="highlight">HCS</span> (Consensus Service)</td>
+      <td>Audit Trail</td>
+      <td>Full task details (input hash, output hash, verdict) published as ordered messages</td>
+    </tr>
+    <tr>
+      <td><span class="highlight">Mirror Node</span></td>
+      <td>Verification Layer</td>
+      <td>REST API queries fetch NFT metadata + HCS messages for independent hash comparison</td>
+    </tr>
+  </table>
+  <div style="margin-top: 32px; padding: 20px; background: rgba(139, 92, 246, 0.1); border-radius: 12px; border: 1px solid rgba(139, 92, 246, 0.2);">
+    <p style="font-size: 19px; color: #c4b5fd;"><strong>Remove any one service and the system breaks.</strong> Without HTS: no transferable certificates. Without HCS: no audit trail to reference. Without Mirror Node: no independent verification.</p>
+  </div>
+  <span class="brand">ProofMint</span>
+  <span class="slide-number">4/8</span>
+</div>
+
+<!-- SLIDE 5: Technical Architecture -->
+<div class="slide">
+  <h3>Architecture</h3>
+  <h2>Tech Stack & On-Chain Proof</h2>
+  <div class="grid-2">
+    <div>
+      <h4 style="color: #8b5cf6; font-size: 20px; margin-bottom: 16px;">Stack</h4>
+      <ul>
+        <li><strong>hiero-sdk-python</strong> - HTS + HCS transactions</li>
+        <li><strong>FastAPI</strong> - Python backend + REST API</li>
+        <li><strong>Next.js 15</strong> - Certificate dashboard</li>
+        <li><strong>SQLite</strong> - Local state (verified against chain)</li>
+        <li><strong>AI Code Reviewer</strong> - Rule-based + Gemini</li>
+      </ul>
+    </div>
+    <div>
+      <h4 style="color: #8b5cf6; font-size: 20px; margin-bottom: 16px;">Confirmed On-Chain (Testnet)</h4>
+      <ul>
+        <li>NFT Collection: <strong>0.0.8114539</strong></li>
+        <li>HCS Topic: <strong>0.0.8114364</strong></li>
+        <li>6 NFT serials minted</li>
+        <li>10+ HCS audit messages</li>
+        <li>All verifiable on HashScan</li>
+      </ul>
+    </div>
+  </div>
+  <div style="margin-top: 24px;">
+    <span class="tag">TokenCreateTransaction</span>
+    <span class="tag">TokenMintTransaction</span>
+    <span class="tag">TopicCreateTransaction</span>
+    <span class="tag">TopicMessageSubmitTransaction</span>
+    <span class="tag">Mirror Node REST</span>
+  </div>
+  <span class="brand">ProofMint</span>
+  <span class="slide-number">5/8</span>
+</div>
+
+<!-- SLIDE 6: Why Hedera -->
+<div class="slide">
+  <h3>Why Hedera</h3>
+  <h2>The only network where this is economically viable</h2>
+  <div class="grid-3">
+    <div class="card" style="text-align: center;">
+      <span class="stat">$0.001</span>
+      <p>Per NFT mint on Hedera. Ethereum: $2-50+ per mint.</p>
+    </div>
+    <div class="card" style="text-align: center;">
+      <span class="stat">Native HCS</span>
+      <p>Ordered message logging without smart contracts. No Solidity needed.</p>
+    </div>
+    <div class="card" style="text-align: center;">
+      <span class="stat">3-5s</span>
+      <p>Finality. Real-time certificate minting after each AI task.</p>
+    </div>
+  </div>
+  <div style="margin-top: 32px;">
+    <p style="font-size: 20px;">Per-task NFT minting is a use case that <strong>only works on Hedera</strong>. On any EVM chain, minting an NFT for every AI code review would cost more than the review itself. Hedera's fixed, predictable fees make high-frequency certification practical.</p>
+  </div>
+  <span class="brand">ProofMint</span>
+  <span class="slide-number">6/8</span>
+</div>
+
+<!-- SLIDE 7: Judging Criteria -->
+<div class="slide">
+  <h3>Judging Criteria</h3>
+  <h2>How ProofMint scores</h2>
+  <table style="font-size: 16px;">
+    <tr>
+      <th style="width: 30%;">Criteria</th>
+      <th>ProofMint</th>
+    </tr>
+    <tr>
+      <td><strong>Innovation</strong></td>
+      <td>First system to mint per-task NFT certificates for AI agents using HTS + HCS combined</td>
+    </tr>
+    <tr>
+      <td><strong>Technical Execution</strong></td>
+      <td>3 Hedera services deeply integrated (HTS, HCS, Mirror Node). All transactions confirmed on testnet.</td>
+    </tr>
+    <tr>
+      <td><strong>User Experience</strong></td>
+      <td>One API call to submit code -> certificate appears in dashboard with HashScan links</td>
+    </tr>
+    <tr>
+      <td><strong>Hedera Usage</strong></td>
+      <td>HTS (NFT collection + minting), HCS (audit trail), Mirror Node (verification). Remove any = broken.</td>
+    </tr>
+    <tr>
+      <td><strong>Practicality</strong></td>
+      <td>Solves real trust gap in AI agent outputs. Applicable to code review, compliance, auditing.</td>
+    </tr>
+    <tr>
+      <td><strong>Scalability</strong></td>
+      <td>At $0.001/mint, scales to millions of certificates. Hedera throughput: 10K+ TPS.</td>
+    </tr>
+    <tr>
+      <td><strong>Presentation</strong></td>
+      <td>Full demo video, pitch deck, live dashboard, on-chain proof on HashScan.</td>
+    </tr>
+  </table>
+  <span class="brand">ProofMint</span>
+  <span class="slide-number">7/8</span>
+</div>
+
+<!-- SLIDE 8: Roadmap + Links -->
+<div class="slide" style="justify-content: center; align-items: center; text-align: center;">
+  <h3>Future Roadmap</h3>
+  <h2 style="margin-bottom: 32px;">Where ProofMint goes next</h2>
+  <div class="grid-3" style="max-width: 1000px;">
+    <div class="card">
+      <h4>Phase 1</h4>
+      <p>Multi-agent support: any AI agent (not just code review) can mint certificates</p>
+    </div>
+    <div class="card">
+      <h4>Phase 2</h4>
+      <p>Certificate marketplace: companies verify and trade AI work credentials</p>
+    </div>
+    <div class="card">
+      <h4>Phase 3</h4>
+      <p>Mainnet launch with SDK for developers to integrate ProofMint into their AI pipelines</p>
+    </div>
+  </div>
+  <div style="margin-top: 48px;">
+    <p style="font-size: 20px; color: #a1a1aa; margin-bottom: 16px;">Try it yourself</p>
+    <div>
+      <span class="tag">github.com/astraedus/proofmint</span>
+      <span class="tag">hashscan.io/testnet/token/0.0.8114539</span>
+      <span class="tag">hashscan.io/testnet/topic/0.0.8114364</span>
+    </div>
+  </div>
+  <p style="margin-top: 40px; font-size: 18px; color: #555;">Built by Diven Rastdus | theagentthatcould@gmail.com</p>
+  <span class="brand">ProofMint</span>
+  <span class="slide-number">8/8</span>
+</div>
+
+</body>
+</html>
