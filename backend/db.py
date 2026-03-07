@@ -20,6 +20,9 @@ logger = logging.getLogger(__name__)
 
 _DB_PATH = "proofmint.db"
 
+# In-memory store for tamper originals (keyed by cert_id)
+_tamper_originals: dict[int, str] = {}
+
 _CREATE_TABLE = """
 CREATE TABLE IF NOT EXISTS certificates (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -33,6 +36,7 @@ CREATE TABLE IF NOT EXISTS certificates (
     hcs_sequence_number TEXT,
     nft_token_id TEXT,
     nft_serial_number INTEGER,
+    issues_json TEXT,
     created_at TEXT DEFAULT (datetime('now')),
     verified_at TEXT,
     verification_status TEXT
@@ -47,9 +51,15 @@ def _set_db_path(path: str) -> None:
 
 
 async def init_db(db_path: str = _DB_PATH) -> None:
-    """Create tables if they don't exist."""
+    """Create tables if they don't exist, and run migrations."""
     async with aiosqlite.connect(db_path) as db:
         await db.execute(_CREATE_TABLE)
+        # Migration: add issues_json column if missing
+        cursor = await db.execute("PRAGMA table_info(certificates)")
+        columns = [row[1] for row in await cursor.fetchall()]
+        if "issues_json" not in columns:
+            await db.execute("ALTER TABLE certificates ADD COLUMN issues_json TEXT")
+            logger.info("Added issues_json column to certificates table")
         await db.commit()
     logger.info("Database initialised at %s", db_path)
 
@@ -65,6 +75,7 @@ async def save_certificate(
     hcs_sequence_number: Optional[str] = None,
     nft_token_id: Optional[str] = None,
     nft_serial_number: Optional[int] = None,
+    issues_json: Optional[str] = None,
     verification_status: str = "pending",
     db_path: str = _DB_PATH,
 ) -> int:
@@ -75,13 +86,13 @@ async def save_certificate(
             INSERT INTO certificates
                 (task_type, task_input_hash, task_output_hash, agent_id, verdict,
                  summary, hcs_topic_id, hcs_sequence_number, nft_token_id,
-                 nft_serial_number, verification_status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                 nft_serial_number, issues_json, verification_status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 task_type, task_input_hash, task_output_hash, agent_id, verdict,
                 summary, hcs_topic_id, hcs_sequence_number, nft_token_id,
-                nft_serial_number, verification_status,
+                nft_serial_number, issues_json, verification_status,
             ),
         )
         await db.commit()
@@ -96,7 +107,14 @@ async def get_certificate(cert_id: int, db_path: str = _DB_PATH) -> Optional[dic
             "SELECT * FROM certificates WHERE id = ?", (cert_id,)
         ) as cursor:
             row = await cursor.fetchone()
-            return dict(row) if row else None
+            if not row:
+                return None
+            d = dict(row)
+            if d.get("issues_json"):
+                d["issues"] = json.loads(d["issues_json"])
+            else:
+                d["issues"] = []
+            return d
 
 
 async def list_certificates(
@@ -113,6 +131,39 @@ async def list_certificates(
         ) as cursor:
             rows = await cursor.fetchall()
             return [dict(r) for r in rows]
+
+
+async def tamper_certificate(cert_id: int, db_path: str = _DB_PATH) -> dict[str, str]:
+    """Corrupt task_output_hash to simulate tampering. Stores original for restore."""
+    cert = await get_certificate(cert_id, db_path)
+    if not cert:
+        raise ValueError(f"Certificate {cert_id} not found")
+    original_hash = cert["task_output_hash"]
+    _tamper_originals[cert_id] = original_hash
+    tampered_hash = "TAMPERED_" + original_hash[:56]
+    async with aiosqlite.connect(db_path) as db:
+        await db.execute(
+            "UPDATE certificates SET task_output_hash = ?, verification_status = 'pending' WHERE id = ?",
+            (tampered_hash, cert_id),
+        )
+        await db.commit()
+    logger.info("Certificate %d tampered: %s -> %s", cert_id, original_hash[:16], tampered_hash[:16])
+    return {"original_hash": original_hash, "tampered_hash": tampered_hash}
+
+
+async def restore_certificate(cert_id: int, db_path: str = _DB_PATH) -> dict[str, str]:
+    """Restore original task_output_hash after tamper simulation."""
+    original_hash = _tamper_originals.pop(cert_id, None)
+    if not original_hash:
+        raise ValueError(f"No tamper record for certificate {cert_id}")
+    async with aiosqlite.connect(db_path) as db:
+        await db.execute(
+            "UPDATE certificates SET task_output_hash = ?, verification_status = 'pending' WHERE id = ?",
+            (original_hash, cert_id),
+        )
+        await db.commit()
+    logger.info("Certificate %d restored to original hash", cert_id)
+    return {"restored_hash": original_hash}
 
 
 async def update_verification_status(

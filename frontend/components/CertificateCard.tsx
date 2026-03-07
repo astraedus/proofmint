@@ -7,7 +7,7 @@ interface Props {
 }
 
 function VerdictBadge({ verdict }: { verdict: string }) {
-  const isApprove = verdict === "approve";
+  const isApprove = verdict === "approved";
   return (
     <span
       className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold border ${
@@ -25,7 +25,7 @@ function VerdictBadge({ verdict }: { verdict: string }) {
           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       )}
-      {isApprove ? "Approved" : "Rejected"}
+      {isApprove ? "Approved" : "Changes Requested"}
     </span>
   );
 }

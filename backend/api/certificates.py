@@ -14,7 +14,7 @@ from typing import Any, Optional
 from fastapi import APIRouter, HTTPException, Query
 
 from backend.config import settings
-from backend.db import get_certificate, list_certificates, update_verification_status
+from backend.db import get_certificate, list_certificates, update_verification_status, tamper_certificate, restore_certificate
 from backend.hedera.mirror import get_hcs_messages, get_nft_info
 
 router = APIRouter(prefix="/api/certificates", tags=["certificates"])
@@ -37,6 +37,26 @@ async def get_cert(cert_id: int) -> dict[str, Any]:
     if not cert:
         raise HTTPException(status_code=404, detail="Certificate not found")
     return cert
+
+
+@router.post("/{cert_id}/tamper")
+async def tamper_cert(cert_id: int) -> dict[str, Any]:
+    """Simulate tampering by corrupting the DB hash. For demo purposes."""
+    try:
+        result = await tamper_certificate(cert_id)
+        return {"cert_id": cert_id, "status": "tampered", **result}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+
+@router.post("/{cert_id}/restore")
+async def restore_cert(cert_id: int) -> dict[str, Any]:
+    """Restore original hash after tamper simulation."""
+    try:
+        result = await restore_certificate(cert_id)
+        return {"cert_id": cert_id, "status": "restored", **result}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @router.get("/{cert_id}/verify")

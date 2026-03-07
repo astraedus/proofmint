@@ -14,6 +14,7 @@ or fails, we still save the result locally and surface the error clearly.
 from __future__ import annotations
 
 import hashlib
+import json
 import logging
 import os
 from dataclasses import dataclass
@@ -162,6 +163,15 @@ async def run_code_review(
             # Non-fatal: certificate is still saved locally
 
     # Step 4: Persist to DB
+    issues_list = [
+        {
+            "severity": i.severity,
+            "category": i.category,
+            "description": i.description,
+            "line_hint": i.line_hint,
+        }
+        for i in result.issues
+    ]
     cert_id = await save_certificate(
         task_type="code_review",
         task_input_hash=input_hash,
@@ -173,6 +183,7 @@ async def run_code_review(
         hcs_sequence_number=hcs_sequence_number,
         nft_token_id=nft_token_id,
         nft_serial_number=nft_serial_number,
+        issues_json=json.dumps(issues_list) if issues_list else None,
         verification_status="verified" if nft_serial_number else "pending",
     )
 
@@ -191,14 +202,6 @@ async def run_code_review(
         nft_token_id=nft_token_id,
         nft_serial_number=nft_serial_number,
         nft_url=nft_url,
-        issues=[
-            {
-                "severity": i.severity,
-                "category": i.category,
-                "description": i.description,
-                "line_hint": i.line_hint,
-            }
-            for i in result.issues
-        ],
+        issues=issues_list,
         created_at=created_at,
     )

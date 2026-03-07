@@ -76,13 +76,13 @@ export default function HomePage() {
             </div>
             <div>
               <span className="text-2xl font-bold text-emerald-400">
-                {certificates.filter((c) => c.verdict === "approve").length}
+                {certificates.filter((c) => c.verdict === "approved").length}
               </span>
               <span className="ml-2 text-sm text-slate-400">Approved</span>
             </div>
             <div>
               <span className="text-2xl font-bold text-red-400">
-                {certificates.filter((c) => c.verdict === "reject").length}
+                {certificates.filter((c) => c.verdict === "changes_requested").length}
               </span>
               <span className="ml-2 text-sm text-slate-400">Rejected</span>
             </div>

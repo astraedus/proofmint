@@ -6,12 +6,13 @@ export interface Certificate {
   task_input_hash: string;
   task_output_hash: string;
   agent_id: string;
-  verdict: "approve" | "reject";
+  verdict: "approved" | "changes_requested" | "needs_review";
   summary: string;
   hcs_topic_id: string;
   hcs_sequence_number: string;
   nft_token_id: string;
   nft_serial_number: number;
+  issues_json: string | null;
   created_at: string;
   verified_at: string | null;
   verification_status: "verified" | "tampered" | "pending" | null;
@@ -49,6 +50,29 @@ export async function getCertificate(id: number): Promise<Certificate> {
 export async function verifyCertificate(id: number): Promise<VerifyResult> {
   const res = await fetch(`${API_BASE}/api/certificates/${id}/verify`);
   if (!res.ok) throw new Error("Failed to verify certificate");
+  return res.json();
+}
+
+export interface TamperResult {
+  cert_id: number;
+  status: string;
+  original_hash: string;
+  tampered_hash: string;
+}
+
+export async function tamperCertificate(id: number): Promise<TamperResult> {
+  const res = await fetch(`${API_BASE}/api/certificates/${id}/tamper`, {
+    method: "POST",
+  });
+  if (!res.ok) throw new Error("Failed to tamper certificate");
+  return res.json();
+}
+
+export async function restoreCertificate(id: number): Promise<{ cert_id: number; status: string; restored_hash: string }> {
+  const res = await fetch(`${API_BASE}/api/certificates/${id}/restore`, {
+    method: "POST",
+  });
+  if (!res.ok) throw new Error("Failed to restore certificate");
   return res.json();
 }
 
