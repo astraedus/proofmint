@@ -53,10 +53,10 @@ https://github.com/astraedus/proofmint
 ## Live Demo
 - NFT Collection: https://hashscan.io/testnet/token/0.0.8114539
 - HCS Topic: https://hashscan.io/testnet/topic/0.0.8114364
-- Dashboard: (will be deployed)
+- Dashboard: https://proofmint.vercel.app
 
 ## Demo Video
-(YouTube link -- to be recorded)
+https://youtu.be/iqDurB3gVp4
 
 ## Team
 Diven Rastdus -- full-stack + AI engineer, solo builder
