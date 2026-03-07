@@ -48,6 +48,13 @@ NARRATION = [
      "It fetches the NFT from the Mirror Node, fetches the HCS message, and compares the hashes. "
      "If anyone edits the database, the on-chain record will not match. "
      "Tamper-proof verification."),
+    ("05b_tamper",
+     "Now the key test. We corrupt the database. "
+     "The output hash is changed to a fake value. "
+     "Verification fetches the original hash from Hedera and compares. "
+     "Mismatch detected. Status: tampered. "
+     "Then we restore the original hash and verify again. Status: verified. "
+     "The blockchain is the source of truth."),
     ("06_why_hedera",
      "ProofMint uses three Hedera services together. "
      "HTS for NFT certificates, each one a permanent proof of work. "
@@ -193,6 +200,31 @@ HTML = r"""<!DOCTYPE html>
   .verify-status { font-size: 13px; font-weight: 600; }
   .status-ok { color: #3fb950; }
   .status-match { color: #00d4aa; }
+
+  /* Slide 5b: Tamper Detection */
+  #s5b { background: #020817; align-items: flex-start; padding: 40px 60px; }
+  #s5b h2 { font-size: 32px; font-weight: 700; margin-bottom: 20px; width: 100%; }
+  .tamper-split { display: flex; gap: 20px; width: 100%; margin-bottom: 16px; }
+  .tamper-box {
+    flex: 1; border-radius: 10px; padding: 20px;
+    border: 1px solid #30363d; background: #0d1117;
+  }
+  .tamper-box-bad { border-color: #f85149; background: rgba(248,81,73,0.08); }
+  .tamper-box-good { border-color: #3fb950; background: rgba(63,185,80,0.08); }
+  .tamper-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .tamper-label-bad { color: #f85149; }
+  .tamper-label-good { color: #3fb950; }
+  .tamper-hash { font-family: monospace; font-size: 13px; word-break: break-all; line-height: 1.6; }
+  .tamper-result {
+    width: 100%; text-align: center; padding: 16px;
+    border-radius: 10px; font-size: 18px; font-weight: 700;
+  }
+  .tamper-result-bad { background: rgba(248,81,73,0.12); border: 1px solid #f85149; color: #f85149; }
+  .tamper-result-good { background: rgba(0,212,170,0.12); border: 1px solid #00d4aa; color: #00d4aa; }
+  .tamper-arrow { text-align: center; font-size: 24px; color: #6e7681; margin: 8px 0; }
 
   /* Slide 6: Why Hedera */
   #s6 { background: #020817; }
@@ -385,6 +417,28 @@ HTML = r"""<!DOCTYPE html>
   </div>
 </div>
 
+<!-- Slide 5b: Tamper Detection -->
+<div class="slide" id="s5b">
+  <h2>Tamper <span style="color:#f85149">Detection</span> Demo</h2>
+  <div class="tamper-split">
+    <div class="tamper-box tamper-box-bad">
+      <div class="tamper-label tamper-label-bad">Corrupted Database Hash</div>
+      <div class="tamper-hash" style="color:#f85149">TAMPERED_493d4546<br>46af45515e96d442<br>60e50dee48a41852</div>
+    </div>
+    <div class="tamper-box tamper-box-good">
+      <div class="tamper-label tamper-label-good">Original Hash on Hedera (HCS)</div>
+      <div class="tamper-hash" style="color:#3fb950">493d454646af4551<br>5e96d44260e50dee<br>48a41852861b9034</div>
+    </div>
+  </div>
+  <div class="tamper-result tamper-result-bad" style="margin-bottom: 12px;">
+    HASHES DON'T MATCH &mdash; TAMPERING DETECTED
+  </div>
+  <div class="tamper-arrow">&darr; Restore original hash &darr;</div>
+  <div class="tamper-result tamper-result-good">
+    HASHES MATCH &mdash; CERTIFICATE VERIFIED
+  </div>
+</div>
+
 <!-- Slide 6: Why Hedera -->
 <div class="slide" id="s6">
   <h2>Three <span class="hedera">Hedera</span> Services, One System</h2>
@@ -427,8 +481,9 @@ const TIMINGS = [
   { id: 's3', start: 44,  end: 59  },
   { id: 's4', start: 59,  end: 74  },
   { id: 's5', start: 74,  end: 89  },
-  { id: 's6', start: 89,  end: 109 },
-  { id: 's7', start: 109, end: 125 },
+  { id: 's5b', start: 89,  end: 109 },
+  { id: 's6', start: 109, end: 129 },
+  { id: 's7', start: 129, end: 145 },
 ];
 let start = Date.now();
 function tick() {
@@ -482,7 +537,7 @@ def record():
         page.goto(f"file://{html_path}", wait_until="domcontentloaded")
         time.sleep(1)
 
-        total = 130
+        total = 150
         print(f"  recording {total}s of slides...")
         time.sleep(total)
 
