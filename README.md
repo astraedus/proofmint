@@ -76,7 +76,7 @@ Get free testnet credentials: https://portal.hedera.com
 |-----------|----------|-------|--------|
 | [Hedera Hello Future Apex 2026](https://hackathon.stackup.dev/web/events/hedera-hello-future-apex-hackathon-2026) | StackUp | AI & Agents | SUBMITTED (March 7, 2026) |
 
-**Why this hackathon**: $250K prize pool, AI & Agents track. ProofMint was purpose-built for this — uses 3 Hedera services (HTS, HCS, Mirror Node) as structurally essential components.
+**Why Hedera**: ProofMint needs low-cost, high-frequency NFT minting with native consensus messaging — Hedera is the only network where per-task certification is economically viable. The AI & Agents track was a natural fit.
 
 **On-chain proof (testnet)**:
 - NFT Collection: [0.0.8114539](https://hashscan.io/testnet/token/0.0.8114539)
