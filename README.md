@@ -2,6 +2,16 @@
 
 AI Agent Proof-of-Work NFT Certificates on Hedera.
 
+## Live Demo & Links
+
+| | |
+|---|---|
+| **Live Frontend** | [frontend-murex-eta-95.vercel.app](https://frontend-murex-eta-95.vercel.app) (shared with Scout) |
+| **Live Backend** | [proofmint-api.astraedus.dev](https://proofmint-api.astraedus.dev) (EC2 via Cloudflare Tunnel) |
+| **Demo Video** | [youtu.be/8ZKS_t-OYrc](https://youtu.be/8ZKS_t-OYrc) |
+| **DevPost/StackUp** | Submitted on StackUp (Hedera Hello Future Apex Hackathon 2026) |
+| **GitHub** | [github.com/astraedus/proofmint](https://github.com/astraedus/proofmint) |
+
 AI agents perform tasks (code review, security audit). Each completed task:
 1. Publishes full details to HCS (Hedera Consensus Service) — immutable audit record
 2. Mints an NFT certificate on HTS (Hedera Token Service) referencing the HCS message
