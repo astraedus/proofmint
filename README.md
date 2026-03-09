@@ -51,20 +51,7 @@ python3 scripts/test_nft_mint.py
 
 ## Architecture
 
-```
-POST /api/tasks/review
-  -> AI Agent (Gemini / rule-based fallback)
-  -> HCS: publish task details as immutable message
-  -> HTS: mint NFT with metadata pointing at HCS message
-  -> DB: persist certificate record
-  -> Return CertificateRecord with all on-chain references
-
-GET /api/certificates/{id}/verify
-  -> Fetch NFT from Mirror Node
-  -> Fetch HCS message from Mirror Node
-  -> Cross-check hashes
-  -> Return verification report
-```
+![Architecture](docs/architecture.png)
 
 ## Environment Variables
 
