@@ -53,6 +53,16 @@ python3 scripts/test_nft_mint.py
 
 ![Architecture](docs/architecture.png)
 
+```mermaid
+graph LR
+    A[Next.js Frontend<br/>Upload + Verify] -->|Document upload| B[FastAPI Backend<br/>EC2]
+    B -->|Hash document| C[SHA-256<br/>Fingerprint]
+    C -->|Document hash| B
+    B -->|Store hash on-chain| D[Hedera Consensus<br/>Service]
+    D -->|Transaction receipt +<br/>Timestamp| B
+    B -->|Verification certificate<br/>+ Hedera proof| A
+```
+
 ## Environment Variables
 
 | Variable | Required | Description |
